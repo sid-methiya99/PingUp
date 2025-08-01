@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./*": "./src/*.tsx"
+    ".": "./src/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -17,9 +17,11 @@
     "@types/react": "19.1.0",
     "@types/react-dom": "19.1.1",
     "eslint": "^9.31.0",
+    "tailwindcss": "^4.0.0",
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }
