@@ -1,11 +1,3 @@
-import { Button } from '@repo/ui'
-
-function App() {
-   return (
-      <div className="">
-         <Button />
-      </div>
-   )
-}
+function App() {}
 
 export default App
