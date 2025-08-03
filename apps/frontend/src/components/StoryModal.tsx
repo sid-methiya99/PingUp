@@ -1,5 +1,6 @@
 import { ArrowLeft, Sparkle, TextIcon, Upload } from 'lucide-react'
-import { use, useState } from 'react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 export const StoryModal = ({ setShowModal, fetchStories }) => {
    const bgcolor = [
@@ -24,7 +25,7 @@ export const StoryModal = ({ setShowModal, fetchStories }) => {
       }
    }
 
-   const handleCreateStory = async (e) => {}
+   const handleCreateStory = async () => {}
    return (
       <div className="fixed inset-0 z-110 min-h-screen bg-black/80 backdrop-blur text-white flex items-center justify-center p-4">
          <div className="w-full max-w-md">
@@ -110,7 +111,16 @@ export const StoryModal = ({ setShowModal, fetchStories }) => {
                   <Upload size={18} /> Photo/Video
                </label>
             </div>
-            <button className="flex items-center w-full justify-center gap-2 py-2.5  mt-6 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-700 hover:to-purple-800 active:scale-95 text-white cursor-pointer">
+            <button
+               onClick={(e) => {
+                  toast.promise(handleCreateStory(), {
+                     loading: 'Saving...',
+                     success: <p>Story added</p>,
+                     error: (e) => <p>{e.message}</p>,
+                  })
+               }}
+               className="flex items-center w-full justify-center gap-2 py-2.5  mt-6 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-700 hover:to-purple-800 active:scale-95 text-white cursor-pointer"
+            >
                <Sparkle size={18} /> Create Story
             </button>
          </div>

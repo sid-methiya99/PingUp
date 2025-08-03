@@ -13,6 +13,7 @@ export const Sidebar = ({ sidebarOpen, setSideBarOpen }: SidebarProps) => {
    const navigate = useNavigate()
    const user = dummyUserData
    const { signOut } = useClerk()
+   console.log('From sidebar')
 
    return (
       <div

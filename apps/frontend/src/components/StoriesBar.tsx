@@ -3,14 +3,15 @@ import { dummyStoriesData } from '../assets/assets'
 import { Plus } from 'lucide-react'
 import moment from 'moment'
 import { StoryModal } from './StoryModal'
-
+import { StoryViewer } from './StoryViewer'
+export type dummyStories = typeof dummyStoriesData
 export const StoriesBar = (props: {}) => {
-   const [stories, setStories] = useState<(typeof dummyStoriesData)[]>([])
+   const [stories, setStories] = useState<dummyStories>()
    const [showModal, setShowModal] = useState(false)
    const [viewStory, setViewStory] = useState(false)
 
    const fetchStories = async () => {
-      setStories([dummyStoriesData])
+      setStories(dummyStoriesData)
    }
 
    useEffect(() => {
@@ -36,42 +37,39 @@ export const StoriesBar = (props: {}) => {
                   </p>
                </div>
             </div>
-            {stories.map((story, index) => (
-               <div key={index} className="flex gap-3">
-                  {story.map((x, i) => (
-                     <div
-                        key={i}
-                        className={`relative rounded-lg shadow min-w-30 max-w-30 max-h-40 cursor-pointer hover:shadow-lg 
-                            transition-all duration-100 bg-gradient-to-b from-indigo-500 to-purple-600 hover:from-indigo-700 
-                            hover:to-purple-800 active:scale-95`}
-                     >
-                        <img
-                           src={x.user.profile_picture}
-                           className="absolute size-8 top-3 left-3 z-10 rounded-full ring ring-gray-100 shadow"
-                        />
-                        <p className="absolute top-3 left-3 text-white/60 text-sm truncate max-w-24">
-                           {x.content}
-                        </p>
-                        <p className="text-white absolute bottom-1 right-2 z-10 text-xs">
-                           {moment(x.createdAt).fromNow()}
-                        </p>
-                        {x.media_type != 'text' && (
-                           <div className="absolute inset-0 z-1 rounded-lg bg-black overflow-hidden">
-                              {x.media_type === 'image' ? (
-                                 <img
-                                    src={x.media_url}
-                                    className="h-full w-full object-cover hover:scale-110 transition duration-500 opacity-70 hover:opacity-80"
-                                 />
-                              ) : (
-                                 <video
-                                    src={x.media_url}
-                                    className="h-full w-full object-cover hover:scale-110 transition duration-500 opacity-70 hover:opacity-80"
-                                 />
-                              )}
-                           </div>
+            {stories?.map((x, i) => (
+               <div
+                  onClick={() => {
+                     setViewStory(true)
+                  }}
+                  key={i}
+                  className={`relative rounded-lg shadow min-w-30 max-w-30 max-h-40 cursor-pointer hover:shadow-lg transition-all duration-100 bg-gradient-to-b from-indigo-500 to-purple-600 hover:from-indigo-700 hover:to-purple-800 active:scale-95`}
+               >
+                  <img
+                     src={x.user.profile_picture}
+                     className="absolute size-8 top-3 left-3 z-10 rounded-full ring ring-gray-100 shadow"
+                  />
+                  <p className="absolute top-3 left-3 text-white/60 text-sm truncate max-w-24">
+                     {x.content}
+                  </p>
+                  <p className="text-white absolute bottom-1 right-2 z-10 text-xs">
+                     {moment(x.createdAt).fromNow()}
+                  </p>
+                  {x.media_type != 'text' && (
+                     <div className="absolute inset-0 z-1 rounded-lg bg-black overflow-hidden">
+                        {x.media_type === 'image' ? (
+                           <img
+                              src={x.media_url}
+                              className="h-full w-full object-cover hover:scale-110 transition duration-500 opacity-70 hover:opacity-80"
+                           />
+                        ) : (
+                           <video
+                              src={x.media_url}
+                              className="h-full w-full object-cover hover:scale-110 transition duration-500 opacity-70 hover:opacity-80"
+                           />
                         )}
                      </div>
-                  ))}
+                  )}
                </div>
             ))}
          </div>
@@ -81,6 +79,10 @@ export const StoriesBar = (props: {}) => {
                setShowModal={setShowModal}
                fetchStories={fetchStories}
             />
+         )}
+
+         {viewStory && (
+            <StoryViewer setViewStory={setViewStory} stories={stories} />
          )}
       </div>
    )
