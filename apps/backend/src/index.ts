@@ -1,5 +1,6 @@
 import express from 'express'
-
+import { PrismaClient } from '@repo/db'
+const prisma = new PrismaClient()
 const app = express()
 
 app.get('/', (req, res) => {
