@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id               String      @id @default(uuid())
+    email            String      @unique
+    fullName         String
+    username         String
+    bio              String?     @default("")
+    profilePicture   String?
+    coverPhoto       String?
+    location         String?
+    followerId       String?
+    followingId      String?
+    connectionId     String?
+    postsId          String?
+    isVerified       Boolean     @default(false)
+    createdAt        DateTime    @default(now())
+    updatedAt        DateTime?
+    Follower         Follower[]
+    Following        Following[]
+    Posts            Post[]
+    Likes            Likes[]
+    Stories          Stories[]
+    sendMessages     Messages[]  @relation("MessagesFromUser")
+    receivedMessages Messages[]  @relation("MessagesFromOthers")
+}
+
+model Follower {
+    id         String  @id @default(uuid())
+    userId     String
+    user       User    @relation(fields: [userId], references: [id])
+    isFollower Boolean @default(false)
+}
+
+model Following {
+    id         String  @id @default(uuid())
+    userId     String
+    user       User    @relation(fields: [userId], references: [id])
+    isFollower Boolean @default(false)
+}
+
+// Add connections later on
+
+model Post {
+    id         String    @id @default(uuid())
+    userId     String
+    user       User      @relation(fields: [userId], references: [id])
+    content    String?
+    imageUrls  String[]
+    postType   PostType
+    likesCount Likes[]
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime?
+}
+
+model Likes {
+    id        String  @id @default(uuid())
+    userId    String
+    user      User    @relation(fields: [userId], references: [id])
+    isLiked   Boolean @default(false)
+    Post      Post?   @relation(fields: [postId], references: [id])
+    postId    String?
+    storiesId String?
+}
+
+model Stories {
+    id               String    @id @default(uuid())
+    userId           String
+    user             User      @relation(fields: [userId], references: [id])
+    content          String?
+    mediaUrl         String
+    media_type       StoryType
+    background_color String
+    createdAt        DateTime  @default(now())
+    updatedAt        DateTime?
+}
+
+model Messages {
+    id         String      @id @default(uuid())
+    fromUserId String
+    fromUser   User        @relation("MessagesFromUser", fields: [fromUserId], references: [id])
+    toUserId   String
+    toUser     User        @relation("MessagesFromOthers", fields: [toUserId], references: [id])
+    userId     String?
+    text       String?
+    media_type MessageType
+    media_url  String?
+    seen       Boolean     @default(false)
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime?
+}
+
+enum PostType {
+    Image
+    Text
+    TextWithImage
+}
+
+enum MessageType {
+    Text
+    Image
+}
+
+enum StoryType {
+    Image
+    Text
+    Video
+}
