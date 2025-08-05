@@ -2,7 +2,7 @@ import { ArrowLeft, Sparkle, TextIcon, Upload } from 'lucide-react'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
-export const StoryModal = ({ setShowModal, fetchStories }) => {
+export const StoryModal = ({ setShowModal }) => {
    const bgcolor = [
       '#4f46e5',
       '#7c3aed',

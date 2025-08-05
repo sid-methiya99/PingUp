@@ -5,6 +5,7 @@ import bgImage from './bgImage.png'
 import group_users from './group_users.png'
 import { Home, MessageCircle, Search, UserIcon, Users } from 'lucide-react'
 import sponsored_img from './sponsored_img.png'
+import type { Story } from '../components/StoriesBar'
 
 export const assets = {
    logo,
@@ -59,7 +60,7 @@ const dummyUser3Data = {
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop',
 }
 
-export const dummyStoriesData = [
+export const dummyStoriesData: Story[] = [
    {
       _id: '68833d466e4b42b685068860',
       user: dummyUserData,
@@ -295,4 +296,3 @@ export const dummyFollowersData = [dummyUser2Data, dummyUser3Data]
 export const dummyFollowingData = [dummyUser2Data, dummyUser3Data]
 
 export const dummyPendingConnectionsData = [dummyUserData]
-

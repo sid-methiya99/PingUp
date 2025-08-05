@@ -1,14 +1,39 @@
 import { useEffect, useState } from 'react'
-import { dummyStoriesData } from '../assets/assets'
+import { dummyStoriesData, dummyUserData } from '../assets/assets'
 import { Plus } from 'lucide-react'
 import moment from 'moment'
 import { StoryModal } from './StoryModal'
 import { StoryViewer } from './StoryViewer'
-export type dummyStories = typeof dummyStoriesData
+export type User = {
+   _id: string
+   email: string
+   full_name: string
+   username: string
+   bio: string
+   profile_picture: string
+   cover_photo: string
+   location: string
+   followers: string[]
+   following: string[]
+   createdAt: string
+   updatedAt: string
+}
+
+export type Story = {
+   _id: string
+   user: User
+   content: string
+   media_url: string
+   media_type: 'text' | 'image' | 'video'
+   background_color?: string
+   createdAt: string
+   updatedAt: string
+}
 export const StoriesBar = (props: {}) => {
-   const [stories, setStories] = useState<dummyStories>()
+   const [stories, setStories] = useState<Story[]>([])
    const [showModal, setShowModal] = useState(false)
    const [viewStory, setViewStory] = useState(false)
+   const [currentStoryData, setCurrentStoryData] = useState<Story | undefined>()
 
    const fetchStories = async () => {
       setStories(dummyStoriesData)
@@ -41,6 +66,7 @@ export const StoriesBar = (props: {}) => {
                <div
                   onClick={() => {
                      setViewStory(true)
+                     setCurrentStoryData(x)
                   }}
                   key={i}
                   className={`relative rounded-lg shadow min-w-30 max-w-30 max-h-40 cursor-pointer hover:shadow-lg transition-all duration-100 bg-gradient-to-b from-indigo-500 to-purple-600 hover:from-indigo-700 hover:to-purple-800 active:scale-95`}
@@ -74,15 +100,13 @@ export const StoriesBar = (props: {}) => {
             ))}
          </div>
          {/* Add story modal */}
-         {showModal && (
-            <StoryModal
-               setShowModal={setShowModal}
-               fetchStories={fetchStories}
-            />
-         )}
+         {showModal && <StoryModal setShowModal={setShowModal} />}
 
          {viewStory && (
-            <StoryViewer setViewStory={setViewStory} stories={stories} />
+            <StoryViewer
+               setViewStory={setViewStory}
+               stories={currentStoryData}
+            />
          )}
       </div>
    )
