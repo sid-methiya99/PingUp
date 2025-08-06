@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-    id               String      @id @default(uuid())
+    id               String      @id
     email            String      @unique
     fullName         String
     username         String
@@ -26,8 +26,8 @@ model User {
     followingId      String?
     connectionId     String?
     postsId          String?
-    isVerified       Boolean     @default(false)
-    createdAt        DateTime    @default(now())
+    isVerified       Boolean?    @default(false)
+    createdAt        DateTime?   @default(now())
     updatedAt        DateTime?
     Follower         Follower[]
     Following        Following[]
